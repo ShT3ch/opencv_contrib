@@ -40,8 +40,6 @@ the use of this software, even if advised of the possibility of such damage.
 #include "opencv2/aruco.hpp"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <iostream>
-
 
 namespace cv {
 namespace aruco {
@@ -1333,33 +1331,14 @@ void GridBoard::draw(Size outSize, OutputArray _img, int marginSize, int borderB
 /**
 */
 Ptr<Board> Board::create(InputArrayOfArrays objPoints, Ptr<Dictionary> &dictionary, InputArray ids) {
-
-	Ptr<Board> res = makePtr<Board>();
-
-	cout << "empty board created" << endl;
 	
 	Mat ids_mat = ids.getMat();
-
-	cout << "mat converted. There " << ids_mat.rows << " rows and " << ids_mat.cols << "cols" << endl;
-
-	
 	std::vector<int> ids_vector;
-
-	cout << "ids_vector created" << endl;
-
 	for (int i = 0; i < ids_mat.rows; i++) {
 		ids_vector.push_back(ids_mat.at<int>(i));
 	}
 
-	cout << "vector filled, it has length " << ids_vector.size() << endl;
-
-	res->ids = ids_vector;
-	cout << "vector ids assigned!" << endl;
-
 	std::vector< std::vector< Point3f > > obj_points_vector;
-	cout << "empty objpoints vector created" << endl;
-
-
 	for (int i = 0; i < objPoints.total(); i++) {
 		std::vector<Point3f> corners;
 		Mat corners_mat = objPoints.getMat(i);
@@ -1369,14 +1348,10 @@ Ptr<Board> Board::create(InputArrayOfArrays objPoints, Ptr<Dictionary> &dictiona
 		obj_points_vector.push_back(corners);
 	}
 
-	cout << "empty objpoints vector filled with "<< objPoints.size()<< " points" << endl;
-
+	Ptr<Board> res = makePtr<Board>();
+	res->ids = ids_vector;
 	res->objPoints = obj_points_vector;
-
-	cout << "objpoints vector assigned!" << endl;
-
 	res->dictionary = dictionary;
-	cout << "dictionary assigned!" << endl;
 	return res;
 }
 
